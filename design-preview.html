@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview de Design</title>
+<style>
+  :root {
+    --preto: #000000;
+    --amarelo: #FFFF00;
+    --branco: #FFFFFF;
+    --sombra: 2px 2px 0px var(--preto);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--preto);
+    color: var(--branco);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .tela { display: none; height: 100vh; width: 100vw; }
+  .tela.ativa { display: flex; flex-direction: column; }
+
+  /* ================= HOME ================= */
+  .home {
+    background: var(--preto);
+    align-items: center;
+    justify-content: center;
+    padding: 16px 16px 0 16px;
+    position: relative;
+  }
+
+  /* Logo centralizada no topo */
+  .logo-topo {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .botoes {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 340px;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    background: var(--amarelo);
+    border: 4px solid var(--preto);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--preto);
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+
+  .btn:active { transform: scale(0.96); opacity: 0.85; }
+
+  /* ================= BANDEJA INFERIOR ================= */
+  .bandeja {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    background: var(--preto);
+    border-top: 4px solid var(--amarelo);
+    z-index: 50;
+    touch-action: manipulation;
+  }
+  .item-bandeja {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #666666;
+    font-size: 11px;
+    font-weight: 900;
+    cursor: pointer;
+    border-right: 2px solid #333333;
+    transition: color 0.08s ease;
+  }
+  .item-bandeja:last-child { border-right: none; }
+  .item-bandeja:active { color: var(--amarelo); }
+  .item-bandeja.ativo { color: var(--amarelo); }
+  .item-bandeja .emoji { font-size: 34px; line-height: 1; }
+
+  /* ================= TELAS COM CÂMERA (simulada) ================= */
+  .camera-base {
+    position: relative;
+    flex: 1;
+    background: var(--preto);
+    overflow: hidden;
+  }
+
+  .camera-sim {
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #111 0%, #000 70%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .camera-sim::after {
+    content: "CÂMERA ATIVA";
+    position: absolute; top: 24px; left: 50%; transform: translateX(-50%);
+    color: var(--branco); font-size: 14px; font-weight: 800;
+    background: rgba(0,0,0,0.55); padding: 6px 12px; border-radius: 20px;
+    border: 2px solid var(--amarelo);
+  }
+
+  /* Moldura leitura (Cores) */
+  .moldura {
+    width: 170px; height: 170px;
+    border: 8px solid var(--amarelo);
+    border-radius: 0;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .moldura::before {
+    content: ""; width: 40px; height: 40px;
+    border-radius: 50%; border: 3px solid var(--branco);
+    background: var(--amarelo);
+    box-shadow: 0 0 0 3px var(--preto);
+  }
+
+  .painel-dados {
+    position: absolute; bottom: 150px; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+    text-shadow: var(--sombra);
+  }
+  .nome-cor { font-size: 42px; font-weight: 900; color: var(--branco); text-align: center; margin: 0; }
+  .confianca { font-size: 20px; font-weight: 800; color: var(--amarelo); }
+
+  .botoes-flutuantes {
+    position: absolute; bottom: 140px; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 18px; padding: 0 16px;
+  }
+  .btn-circular {
+    width: 76px; height: 76px;
+    border-radius: 50%;
+    background: var(--amarelo);
+    border: 4px solid var(--preto);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    cursor: pointer; touch-action: manipulation;
+    color: var(--preto); font-weight: 900;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+  .btn-circular:active { transform: scale(0.92); opacity: 0.85; }
+  .btn-circular.inativo { background: #333333; border-color: #666666; color: #999999; }
+
+  .btn-voltar {
+    position: absolute; top: 20px; left: 20px;
+    background: var(--amarelo); border: 4px solid var(--preto);
+    border-radius: 10px; padding: 10px 16px;
+    font-size: 17px; font-weight: 900; color: var(--preto);
+    cursor: pointer; touch-action: manipulation;
+    z-index: 20;
+    transition: transform 0.08s ease, opacity 0.08s ease;
+  }
+  .btn-voltar:active { transform: scale(0.94); opacity: 0.85; }
+
+  /* Luz */
+  .indicador-luz {
+    width: 180px; height: 180px;
+    border: 8px solid var(--preto);
+    background: var(--amarelo);
+    border-radius: 0;
+    position: relative;
+    animation: pulso 2.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes pulso {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.06); opacity: 0.92; }
+  }
+  .indicador-luz.escuro { background: #222222; border-color: #444444; animation: none; }
+
+  .painel-luz {
+    position: absolute; bottom: 150px; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px; text-shadow: var(--sombra);
+  }
+  .rotulo-luz { font-size: 26px; font-weight: 900; color: var(--branco); margin: 0; }
+  .valor-luz { font-size: 52px; font-weight: 900; color: var(--amarelo); line-height: 1; }
+  .frequencia { font-size: 20px; font-weight: 800; color: var(--branco); }
+  .fonte { font-size: 14px; font-weight: 700; color: #CCCCCC; margin-top: 6px; }
+
+  /* Foco teclado */
+  button:focus-visible, .item-bandeja:focus-visible {
+    outline: 4px solid var(--amarelo);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HOME ================= -->
+<div class="tela home ativa" id="home">
+  <img src="assets/images/icon.png" alt="Logo" class="logo-topo">
+
+  <div class="botoes">
+    <button class="btn" onclick="abrirTela('cores')" role="button" aria-label="Identificação de cores. Detecte e identifique cores em tempo real.">
+      🎨 Identificação de Cores
+    </button>
+    <button class="btn" onclick="abrirTela('luz')" role="button" aria-label="Detecção de luz. Ouça um apito que muda conforme a intensidade de luz.">
+      💡 Detecção de Luz
+    </button>
+  </div>
+</div>
+
+<!-- Bandeja inferior — 3 itens só emoji -->
+<div class="bandeja" aria-label="Navegação principal">
+  <button class="item-bandeja ativo" onclick="abrirTela('cores')" role="tab" aria-selected="true" aria-label="Identificação de cores">
+    <span class="emoji">🎨</span>
+  </button>
+  <button class="item-bandeja" onclick="abrirTela('luz')" role="tab" aria-selected="false" aria-label="Detecção de luz">
+    <span class="emoji">💡</span>
+  </button>
+  <button class="item-bandeja" onclick="abrirTela('calibracao')" role="tab" aria-selected="false" aria-label="Configurações">
+    <span class="emoji">⚙️</span>
+  </button>
+</div>
+
+<!-- ================= TELA CORES ================= -->
+<div class="tela camera-base" id="cores">
+  <div class="camera-sim"></div>
+  <div class="moldura" id="molduraCores"></div>
+  <div class="painel-dados">
+    <p class="nome-cor" id="textoCor">—</p>
+    <p class="confianca" id="textoConfianca">Confiança: 0%</p>
+  </div>
+  <div class="botoes-flutuantes">
+    <button class="btn-circular" onclick="abrirTela('luz')" aria-label="Abrir detecção de luz">💡</button>
+  </div>
+  <button class="btn-voltar" onclick="abrirTela('home')">← Voltar</button>
+</div>
+
+<!-- ================= TELA LUZ ================= -->
+<div class="tela camera-base" id="luz">
+  <div class="camera-sim"></div>
+  <div class="indicador-luz" id="indicadorLuz"></div>
+  <div class="painel-luz">
+    <p class="rotulo-luz">Intensidade de Luz</p>
+    <p class="valor-luz" id="valorLuz">0%</p>
+    <p class="frequencia" id="frequencia">440 Hz</p>
+    <p class="fonte" id="fonteLuz">Fonte: Análise de pixels</p>
+  </div>
+  <div class="botoes-flutuantes" style="bottom: 80px;">
+    <button class="btn-circular" id="btnApito" onclick="toggleApito()" aria-label="Apito de luz" aria-checked="true">🔊</button>
+    <button class="btn-circular" onclick="abrirTela('home')">← Voltar</button>
+  </div>
+</div>
+
+<!-- ================= CALIBRAÇÃO (Configurações) ================= -->
+<div class="tela camera-base" id="calibracao">
+  <div class="camera-sim"></div>
+  <div style="position:absolute; top:20px; left:20px; right:20px; text-shadow:2px 2px 0px #000000;">
+    <p style="font-size:24px;font-weight:900;color:#FFFFFF;margin:0;">⚙️ Configurações</p>
+    <p style="font-size:16px;color:#FFFF00;margin-top:8px;">Em breve: sensibilidade, confiança e presets.</p>
+  </div>
+  <button class="btn-voltar" onclick="abrirTela('home')">← Voltar</button>
+</div>
+
+<script>
+  function abrirTela(id) {
+    document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+    document.getElementById(id).classList.add('ativa');
+
+    document.querySelectorAll('.item-bandeja').forEach(b => {
+      b.classList.remove('ativo');
+      b.setAttribute('aria-selected', 'false');
+    });
+    const ativo = document.querySelector('.item-bandeja[onclick="abrirTela(\'' + id + '\')"]');
+    if (ativo) {
+      ativo.classList.add('ativo');
+      ativo.setAttribute('aria-selected', 'true');
+    }
+  }
+
+  /* Simulação leitura de cor (apenas visual) */
+  const cores = [
+    {nome:'Vermelho', hex:'#FF0000'},
+    {nome:'Azul', hex:'#0000FF'},
+    {nome:'Verde', hex:'#008000'},
+    {nome:'Amarelo', hex:'#FFFF00'},
+    {nome:'Preto', hex:'#000000'},
+    {nome:'Branco', hex:'#FFFFFF'},
+    {nome:'Laranja', hex:'#FFA500'},
+    {nome:'Roxo', hex:'#800080'},
+  ];
+  let idxCor = 0;
+  setInterval(() => {
+    if (!document.getElementById('cores').classList.contains('ativa')) return;
+    const c = cores[idxCor = (idxCor + 1) % cores.length];
+    document.getElementById('textoCor').textContent = c.nome;
+    document.getElementById('molduraCores').style.borderColor = (c.hex === '#FFFF00' || c.hex === '#FFFFFF') ? '#000000' : '#FFFF00';
+    document.getElementById('textoConfianca').textContent = 'Confiança: ' + (85 + Math.floor(Math.random()*14)) + '%';
+    document.getElementById('textoConfianca').className = 'confianca';
+  }, 2200);
+
+  /* Simulação luz (apenas visual) */
+  let luz = 30;
+  setInterval(() => {
+    if (!document.getElementById('luz').classList.contains('ativa')) return;
+    luz = Math.max(0, Math.min(100, luz + (Math.random()*20 - 10)));
+    const v = Math.round(luz);
+    document.getElementById('valorLuz').textContent = v + '%';
+    document.getElementById('frequencia').textContent = Math.round(220 + v*3.5) + ' Hz';
+    const ind = document.getElementById('indicadorLuz');
+    if (v < 15) { ind.className = 'indicador-luz escuro'; ind.style.borderColor = '#444444'; }
+    else { ind.className = 'indicador-luz'; ind.style.borderColor = '#000000'; }
+  }, 1500);
+
+  function toggleApito() {
+    const btn = document.getElementById('btnApito');
+    const ativo = btn.classList.toggle('inativo');
+    btn.setAttribute('aria-checked', String(!ativo));
+    btn.textContent = ativo ? '🔇' : '🔊';
+  }
+</script>
+
+</body>
+</html>

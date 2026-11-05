@@ -1,0 +1,22 @@
+workflows:
+  expo-build:
+    name: Expo Build
+
+    environment:
+      node: 18
+
+    scripts:
+      - name: Install deps
+        script: |
+          npm install
+
+      - name: Install Expo CLI
+        script: |
+          npm install -g expo-cli eas-cli
+
+      - name: Build APK
+        script: |
+          eas build -p android --non-interactive
+
+    artifacts:
+      - build/**/*.apk
