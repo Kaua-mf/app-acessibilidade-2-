@@ -1,0 +1,42 @@
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+pubspec.lock
+
+# Build outputs
+build/
+android/app/build/
+ios/build/
+linux/build/
+macos/build/
+web/build/
+windows/build/
+
+# Android
+*.apk
+*.aab
+*.so
+*.bin
+
+# Local configuration
+local.properties
+*.key
+*.keystore
+google-services.json
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Flutter web
+*.dart_tool/

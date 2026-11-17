@@ -1,0 +1,42 @@
+name: olho_amigo
+description: "App de acessibilidade com identificação de cores e detecção de luz por texto em fala."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.7
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_tts: ^4.2.5
+  permission_handler: ^11.3.0
+  camera: ^0.10.6
+  image: ^4.3.0
+  path_provider: ^2.1.4
+  path: ^1.9.0
+  audioplayers: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/logo.jpg
+    - assets/images/logo_app.jpg
+    - assets/images/logomenor.jpg
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logomenor.jpg"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/logomenor.jpg"
